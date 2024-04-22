@@ -47,5 +47,5 @@ This README provides a brief overview. Refer to the project instructions for a c
 ## 🔗 Links
 
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sayyara-yusupova-55b26a35/)
-
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/aysu-mammadova-727292257/)
 
