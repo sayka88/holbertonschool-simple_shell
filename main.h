@@ -6,6 +6,10 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
-#include <sys/stat.h>
-
+#include <fcntl.h>
+char **line_div(char *command,char **arr);
+char *_getline(void);
+int execute(char *command);
+extern char **environ;
+int main(void);
 #endif
