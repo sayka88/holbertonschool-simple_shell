@@ -12,5 +12,5 @@ char *_getline(void);
 int execute(char *command);
 extern char **environ;
 int main(void);
-int _putchar(char *str);
+int _putchar(char c);
 #endif
