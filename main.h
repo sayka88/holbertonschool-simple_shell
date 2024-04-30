@@ -13,4 +13,5 @@ int execute(char *command);
 extern char **environ;
 int main(void);
 int _putchar(char c);
+int print_hello(void);
 #endif
