@@ -23,7 +23,7 @@ int main(void)
 			exit(0);
 		}
 
-		// Check if the command exists
+		/* Check if the command exists */
 		if (access(command, X_OK) == -1)
 		{
 			printf("Command not found: %s\n", command);
