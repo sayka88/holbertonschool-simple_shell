@@ -5,16 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <stdlib.h>
 #include <fcntl.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-char *read_command(void);
-void parse_arguments(char *command, char **args);
-int execute(char *command);
-extern char **environ;
-void search_and_execute(char *args[], char *command);
-int main(void);
+int execute(char *const command[], char **envp);
+int print_env(void);
+char *_getenv(const char *name, char **envp);
+void parse(char command[], char **envp);
 
-#endif
+#endif 
