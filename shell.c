@@ -172,7 +172,7 @@ int main(void)
 			free(command);
 			exit(0);
 		}
-		status = execute_command(command);
+		status = execute(command);
 		if (status == 2)
 		{
 			exit(2);
