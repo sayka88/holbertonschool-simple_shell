@@ -17,4 +17,4 @@ void handlePath(const char* path, int length);
 void printEnv(void);
 char *handle_path(char *input);
 
-#endif /*MAIN_H*/
+#endif
