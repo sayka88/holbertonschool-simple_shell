@@ -1,30 +1,31 @@
 #include "main.h"
-
-char *_getline(void)
+/**
+ * main - main func
+ *
+ * Return: int
+ */
+int main(void)
 {
-  size_t size = 0;
-  char *line = NULL;
-  int input_cmd;
-  size_t len_str;
-
-  if (isatty(STDIN_FILENO))
-  {
-   printf("$ ");
-  }
-  input_cmd = getline(&line, &size, stdin);
-  
-  if (input_cmd == -1)
-  {
-    free(line);
-    return NULL;
-  }
-  
-  len_str = strlen(line);
-  
-  if (len_str > 0 && line[len_str - 1] == '\n')
-  {
-      line[len_str - 1] = '\0';
-  }
-
-  return line;
+	char *command;
+	int status;
+	
+	while (1)
+	{
+		if (isatty(STDIN_FILENO))
+			printf("$ ");
+		command = _getline();
+		if (command == NULL)
+			break;
+		if (strcmp(command, "exit") == 0)
+		{
+			free(command);
+			exit(0);
+		}
+		status = execute(command);
+		if (status == 2)
+		{
+			exit(2);
+		}
+	}
+	return (status);
 }
