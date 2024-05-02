@@ -1,15 +1,14 @@
 #include "main.h"
-
 /**
-* main - main func
-*
-* Return: int
-*/
+ * main - main func
+ *
+ * Return: int
+ */
 int main(void)
 {
 	char *command;
 	int status;
-
+	
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -22,15 +21,6 @@ int main(void)
 			free(command);
 			exit(0);
 		}
-
-		/* Check if the command exists */
-		if (access(command, X_OK) == -1)
-		{
-			printf("Command not found: %s\n", command);
-			free(command);
-			continue;
-		}
-
 		status = execute(command);
 		if (status == 2)
 		{
@@ -39,4 +29,3 @@ int main(void)
 	}
 	return (status);
 }
-
