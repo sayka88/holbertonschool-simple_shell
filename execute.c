@@ -1,52 +1,59 @@
 #include "main.h"
+/**
+ * _err - checks and handles errors
+ * @args: arguments to check
+ * Return: void
+ */
+
+void _err(char *args[])
+{
+	fprintf(stderr, "%s: command not found\n", args[0]);
+	perror("");
+	free(args[0]);
+	exit(98);
+}
+
 
 /**
-* execute - executes command
-*
-* @command: The command string to execute.
-*
-* Return: the exit status of the executed command,
-* or -1 if an error occurs.
-*/
-int execute(char *command)
+ * exec - executes the input received
+ * @args: arguments
+ * @input: input
+ * Return: void
+ */
+
+void exec(char **args, char *input)
 {
-	int status = 0;
-	pid_t pid;
 
-	if (access(command, X_OK) == -1)
+	int status;
+	pid_t childPid = 0;
+
+	if (access(args[0], X_OK) != 0)
+		_err(args);
+
+	childPid = fork();
+
+	if (childPid == -1)
 	{
-		fprintf(stderr, "Function 'fork' is not allowed\n");
-		return 1;
-	}
-
-	pid = fork();
-
-	if (pid == -1)
-	{
-		perror("fork");
-		free(command);
+		perror("fork\n");
+		free(input);
+		free(args[0]);
 		exit(EXIT_FAILURE);
 	}
-	else if (pid == 0)
+	else if (childPid == 0)
 	{
-		char *arr[64];
-		line_div(command, arr);
-
-		execve(arr[0], arr, environ);
-
-		perror("execve");
-		free(command);
+		execve(args[0], args, environ);
+		perror(args[0]);
+		free(args[0]);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
-		free(command);
+		wait(&status);
 		if (WIFEXITED(status))
-			status = WEXITSTATUS(status);
-		else
-			status = 1;
+		{
+			free(args[0]);
+			free(input);
+			exit(WEXITSTATUS(status));
+		}
 	}
-	return status;
 }
-
