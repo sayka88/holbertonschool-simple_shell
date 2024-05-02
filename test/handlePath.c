@@ -8,15 +8,20 @@
 char *handle_path(char *input)
 {
 	char *token, *path_copy, *full_path;
+	char *input_copy = NULL;
 
 	if (strchr(input, '/') != NULL)
-		return (strdup(input));
+	{
+		input_copy = strdup(input);
+		return input_copy;
+	}
 
 	path_copy = strdup(getenv("PATH"));
 	if (path_copy == NULL)
 	{
 		perror("Error getting PATH");
-		return (NULL);
+		free(input_copy);
+		return NULL;
 	}
 
 	token = strtok(path_copy, ":");
@@ -27,14 +32,16 @@ char *handle_path(char *input)
 		{
 			perror("Malloc failed");
 			free(path_copy);
-			return (NULL);
+			free(input_copy);
+			return NULL;
 		}
 
 		sprintf(full_path, "%s/%s", token, input);
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path_copy);
-			return (full_path);
+			free(input_copy);
+			return full_path;
 		}
 
 		free(full_path);
@@ -42,6 +49,7 @@ char *handle_path(char *input)
 	}
 
 	free(path_copy);
-	return (NULL);
+	free(input_copy);
+	return NULL;
 }
 
