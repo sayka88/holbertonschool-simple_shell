@@ -1,56 +1,32 @@
-#define _GNU_SOURCE
-
 #include "main.h"
-
 /**
- * spacesCheck - check if str contain only space
- * @str: string to check
- * Return: 0 on success or 1 on failure
+ * main - main func
+ *
+ * Return: int
  */
-
-int spacesCheck(const char *str)
-{
-	while (*str)
-	{
-		if (*str != ' ')
-			return (0);
-		str++;
-	}
-	return (1);
-}
-
-/**
- * main - main function for the shell
- * Return: 0 on success
- */
-
 int main(void)
 {
-	char *input = NULL;
-	char *args[64] = { NULL };
-	size_t inputSize = 0;
-	ssize_t inputRead;
-
+	char *command;
+	int status;
+	
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-		{
 			printf("$ ");
-			fflush(stdout);
-		}
+		command = _getline();
 
-		inputRead = getline(&input, &inputSize, stdin);
-		if (inputRead == EOF)
+		if (command == NULL)
+			break;
+		if (strcmp(command, "exit") == 0)
 		{
-			free(input);
+			free(command);
 			exit(0);
 		}
-
-		if (inputRead > 0 && input[inputRead - 1] == '\n')
-			input[inputRead - 1] = '\0';
-		if (spacesCheck(input) != 1)
-			tokenize(input, args);
+		status = execute(command);
+		if (status == 2)
+		{
+			exit(2);
+		}
 	}
-	free(input);
-	return (0);
+	return (status);
 }
