@@ -58,10 +58,12 @@ void executeCommand(char *command)
         {
             int exit_status = WEXITSTATUS(status);
             printf("Child process exited with status: %d\n", exit_status);
+            exit(exit_status);
         }
         else
         {
             printf("Child process exited abnormally\n");
+            exit(EXIT_FAILURE);
         }
     }
 }
