@@ -6,13 +6,14 @@
  * @args: arguments
  * Return: void
  */
-
 void tokenize(char *input, char *args[])
 {
 	char *token;
+	char *resolved_path;
 	unsigned int i = 0;
 
 	token = strtok(input, " ");
+	resolved_path = handle_path(args[0]);
 	while (token != NULL)
 	{
 		args[i] = token;
@@ -24,28 +25,27 @@ void tokenize(char *input, char *args[])
 	if (args[0] == NULL)
 		exit(0);
 
-	if (strcmp(input, "env") == 0)
+	if (strcmp(args[0], "env") == 0)
 	{
 		printEnv();
 		return;
 	}
 
-	if (strcmp(input, "exit") == 0 && args[1] == NULL)
+	if (strcmp(args[0], "exit") == 0 && args[1] == NULL)
 	{
 		free(args[0]);
 		exit(0);
 	}
 
-	token = strdup(args[0]);
-	args[0] = handle_path(args[0]);
-	if (args[0] != NULL)
+	if (resolved_path != NULL)
 	{
-		free(token);
-		exec(args, input);
 		free(args[0]);
+		args[0] = resolved_path;
+		exec(args, input);
 		return;
 	}
-	fprintf(stderr, "./hsh: 1: %s: not found\n", token);
-	free(token);
+
+	fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
 	exit(127);
 }
+

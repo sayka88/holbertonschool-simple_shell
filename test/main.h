@@ -12,9 +12,9 @@
 extern char **environ;
 
 void exec(char **args, char *input);
-void tokenize(char *input, char **args);
-void handlePath(const char *path, int length);
+void tokenize(char *input, char *args[]);
+void handlePath(const char* path, int length);
 void printEnv(void);
 char *handle_path(char *input);
 
-#endif
+#endif /*MAIN_H*/

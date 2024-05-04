@@ -5,51 +5,46 @@
  * @input: User input
  * Return: The full path of the command if found, NULL otherwise
  */
+
 char *handle_path(char *input)
 {
-	char *token, *path_copy, *full_path;
-	char *input_copy = NULL;
+	int i = 0;
+	char *cache, *token, *result;
 
 	if (strchr(input, '/') != NULL)
-	{
-		input_copy = strdup(input);
-		return input_copy;
-	}
+		return (strdup(input));
 
-	path_copy = strdup(getenv("PATH"));
-	if (path_copy == NULL)
+	while (environ[i] != NULL)
 	{
-		perror("Error getting PATH");
-		free(input_copy);
-		return NULL;
-	}
-
-	token = strtok(path_copy, ":");
-	while (token != NULL)
-	{
-		full_path = malloc(strlen(token) + strlen(input) + 2);
-		if (full_path == NULL)
+		cache = strdup(environ[i]);
+		token = strtok(cache, "=");
+		if (strcmp(token, "PATH") == 0)
 		{
-			perror("Malloc failed");
-			free(path_copy);
-			free(input_copy);
-			return NULL;
-		}
+			token = strtok(NULL, "=");
+			token = strtok(token, ":");
+			while (token != NULL)
+			{
+				result = malloc(strlen(token) + strlen(input) + 2);
+				if (result == NULL)
+				{
+					perror("Malloc is NULL");
+					return (NULL);
+				}
+				sprintf(result, "%s/%s", token, input);
+				if (access(result, X_OK) == 0)
+				{
+					free(cache);
+					return (result);
+				}
 
-		sprintf(full_path, "%s/%s", token, input);
-		if (access(full_path, X_OK) == 0)
-		{
-			free(path_copy);
-			free(input_copy);
-			return full_path;
+				free(result);
+				token = strtok(NULL, ":");
+			}
 		}
-
-		free(full_path);
-		token = strtok(NULL, ":");
+		free(cache);
+		i++;
 	}
 
-	free(path_copy);
-	free(input_copy);
-	return NULL;
+	free(input);
+	return (NULL);
 }
-
