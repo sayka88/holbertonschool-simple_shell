@@ -1,95 +1,50 @@
 #include "main.h"
+
 /**
- * execute - executes command
- *
- *@command: The command string to execute.
- *
- * Return: the exit status of the executed command,
- * or -1 if an error occurs.
+ * executeCommand - It is responsible for executing a
+ *                  command on a Unix or Linux system.
+ * @command: string of input
  */
-int execute(char *command)
+
+void executeCommand(char *command)
 {
-        int status = 0;
-        pid_t pid = fork();
+	char *token;
+	pid_t child_pid;
+	int argIndex = 0;
+	char *args[20];
+	int status;
+	char fullPath[20];
 
-        if (pid == -1)
-        {
-                perror("fork");
-                free(command);
-                exit(EXIT_FAILURE);
-        }
-        else if (pid == 0)
-        {
-                char *arr[64];
-                line_div(command, arr);
-                if (arr[0] == NULL)
-                {
-                        free(command);
-                        exit(EXIT_SUCCESS);
-                }
-                if (strcmp(arr[0], "env") == 0)
-                {
-                        char **env = environ;
-
-                        while (*env != NULL)
-                        {
-                                printf("%s\n", *env);
-                                env++;
-                        }
-                        free(command);
-                        exit(EXIT_SUCCESS);
-                }
-                if (strchr(arr[0], '/') != NULL)
-                {
-                        if (access(arr[0], X_OK) == 0)
-                        {
-                                if (execve(arr[0], arr, environ) == -1)
-                                {
-                                        perror("execve");
-                                        free(command);
-                                        exit(EXIT_FAILURE);
-                                }
-                        }
-                }
-                else
-                {
-                        char *path = getenv("PATH");
-                        char *token;
-                        if (path == NULL)
-                        {
-                                fprintf(stderr, "./hsh: 1: %s: not found\n", arr[0]);
-                                free(command);
-                                exit(127);
-                        }
-                        token = strtok(path, ":");
-                        while (token != NULL)
-                        {
-                                char executable_path[256];
-                                snprintf(executable_path, sizeof(executable_path), "%s/%s", token, arr[0]);
-                                if (access(executable_path, X_OK) == 0)
-                                {
-                                        if (execve(executable_path, arr, environ) == -1)
-                                        {
-                                                perror("execve");
-                                                free(command);
-                                                exit(EXIT_FAILURE);
-                                        }
-                                }
-                                token = strtok(NULL, ":");
-                        }
-                }
-                fprintf(stderr, "./hsh: 1: %s: not found\n", arr[0]);
-                free(command);
-                exit(127);
-        }
-        else
-        {
-                waitpid(pid, &status, 0);
-                free(command);
-                if (WIFEXITED(status))
-                        status = WEXITSTATUS(status);
-                else
-                        status = 1;
-        }
-        return (status);
+	args[0] = NULL;
+	for (token = strtok(command, " "); token != NULL;
+			token = strtok(NULL, " "))
+	{
+		args[argIndex] = token;
+		argIndex++;
+	}
+	args[argIndex] = NULL;
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("Error when creating a child process");
+		free(command);
+		exit(EXIT_FAILURE);
+	}
+	else if (child_pid == 0)
+	{
+		if (args[0] && !strchr(args[0], '/'))
+		{
+			if (findExecutable(args[0], fullPath))
+				args[0] = fullPath;
+		}
+		if (execve(args[0], args, environ) == -1)
+		{
+			perror("./shell");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		wait(&status);
+	}
 }
