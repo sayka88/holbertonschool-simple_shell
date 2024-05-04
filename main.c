@@ -9,7 +9,7 @@ int main(void)
 
     while (is_interactive ? printf("$ ") : 0, (read = getline(&line, &len, stdin)) != -1)
     {
-        if (read > 1)
+        if (read > 1 && line[read - 1] == '\n')
             line[read - 1] = '\0';
         execute_command(line);
     }
