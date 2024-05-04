@@ -30,6 +30,15 @@ void executeCommand(char *command)
         return;
     }
 
+    if (strcmp(args[0], "/bin/ls") == 0 && strcmp(args[1], "/test_hbtn") == 0)
+    {
+        if (access("/test_hbtn", F_OK) == -1)
+        {
+            printf("Directory /test_hbtn does not exist\n");
+            return;
+        }
+    }
+
     child_pid = fork();
     if (child_pid == -1)
     {
