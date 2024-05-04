@@ -53,5 +53,15 @@ void executeCommand(char *command)
     else
     {
         wait(&status);
+
+        if (WIFEXITED(status))
+        {
+            int exit_status = WEXITSTATUS(status);
+            printf("Child process exited with status: %d\n", exit_status);
+        }
+        else
+        {
+            printf("Child process exited abnormally\n");
+        }
     }
 }
