@@ -5,8 +5,9 @@ int main(void)
     char *line = NULL;
     size_t len = 0;
     ssize_t read;
+    int is_interactive = isatty(STDIN_FILENO);
 
-    while (printf("$ "), (read = getline(&line, &len, stdin)) != -1)
+    while (is_interactive ? printf("$ ") : 0, (read = getline(&line, &len, stdin)) != -1)
     {
         if (read > 1)
             line[read - 1] = '\0';
