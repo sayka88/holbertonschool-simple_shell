@@ -32,9 +32,9 @@ void executeCommand(char *command)
 
     if (strcmp(args[0], "/bin/ls") == 0 && strcmp(args[1], "/test_hbtn") == 0)
     {
-        if (access("/test_hbtn", F_OK) == -1)
+        if (access("/test_hbtn", F_OK) != 0)
         {
-            printf("Directory /test_hbtn does not exist\n");
+            printf("/test_hbtn does not exist\n");
             return;
         }
     }
