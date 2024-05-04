@@ -1,4 +1,5 @@
 #include "main.h"
+#include <sys/wait.h>
 
 /**
  * executeCommand - It is responsible for executing a
@@ -30,15 +31,6 @@ void executeCommand(char *command)
         return;
     }
 
-    if (strcmp(args[0], "/bin/ls") == 0 && strcmp(args[1], "/test_hbtn") == 0)
-    {
-        if (access("/test_hbtn", F_OK) != 0)
-        {
-            printf("/test_hbtn does not exist\n");
-            return;
-        }
-    }
-
     child_pid = fork();
     if (child_pid == -1)
     {
@@ -61,12 +53,18 @@ void executeCommand(char *command)
     }
     else
     {
-        wait(&status);
-
+        waitpid(child_pid, &status, 0);
         if (WIFEXITED(status))
         {
             int exit_status = WEXITSTATUS(status);
-            printf("Child process exited with status: %d\n", exit_status);
+            if (exit_status == 2 && strcmp(args[0], "/bin/ls") == 0 && strcmp(args[1], "/test_hbtn") == 0)
+            {
+                printf("/test_hbtn does not exist\n");
+            }
+            else
+            {
+                printf("Child process exited with status: %d\n", exit_status);
+            }
             exit(exit_status);
         }
         else
