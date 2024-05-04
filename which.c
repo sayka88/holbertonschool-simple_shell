@@ -32,5 +32,5 @@ char *_which(char *cmd)
     }
 
     free(path_dup);
-    return NULL;
+    return (NULL);
 }
