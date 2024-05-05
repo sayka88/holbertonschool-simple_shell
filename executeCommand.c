@@ -5,6 +5,7 @@
  *                  command on a Unix or Linux system.
  * @command: string of input
  */
+
 void executeCommand(char *command)
 {
     char *token;
@@ -60,4 +61,3 @@ void executeCommand(char *command)
         wait(&status);
     }
 }
-
