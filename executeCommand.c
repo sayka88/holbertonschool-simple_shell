@@ -1,9 +1,8 @@
 #include "main.h"
 
 /**
- * executeCommand - It is responsible for executing a
- *                  command on a Unix or Linux system.
- * @command: string of input
+ * executeCommand - Executes a command on a Unix or Linux system.
+ * @command: The input string.
  */
 
 void executeCommand(char *command)
@@ -61,3 +60,4 @@ void executeCommand(char *command)
         wait(&status);
     }
 }
+
