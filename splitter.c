@@ -1,23 +1,34 @@
 #include "main.h"
+
 /**
- * line_div - splits given string into parts
+ * splitter - splits given string into parts
  *
- * @command: The command string to parse.
- * @arr: An array of strings to store the parsed arguments.
+ * @str: given string
  *
  * Return: modified char array.
  */
-char **line_div(char *command,char **arr)
+
+char **splitter(char *str, char *delim)
 {
 	char *token;
+	char **array;
 	int i = 0;
 
-	token = strtok(command, " \n\t");
-	while (token != NULL && i < 63)
+	if (str == NULL || str[0] == '\0')
+		return (NULL);
+	array = malloc(strlen(str) * sizeof(char *));
+	token = strtok(str, delim);
+	while (token != NULL)
 	{
-		arr[i++] = token;
-		token = strtok(NULL, " \n\t");
+		*(array + i) = strdup(token);
+		if (!*(array + i))
+		{
+			free(*(array + i));
+			exit(99);
+		}
+		i++;
+		token = strtok(NULL, delim);
 	}
-	arr[i++] = NULL;
-	return (arr);
+	*(array + i) = NULL;
+	return (array);
 }
