@@ -5,7 +5,6 @@
  *                  command on a Unix or Linux system.
  * @command: string of input
  */
-
 void executeCommand(char *command)
 {
     char *token;
@@ -28,6 +27,12 @@ void executeCommand(char *command)
     {
         printf("Command is not specified\n");
         return;
+    }
+
+    if (strcmp(args[0], "exit") == 0)
+    {
+        free(command);
+        exit(EXIT_SUCCESS);
     }
 
     child_pid = fork();
