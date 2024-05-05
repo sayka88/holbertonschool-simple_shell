@@ -1,5 +1,4 @@
 #include "main.h"
-#include <stdio.h>
 
 /**
  * main - Creates an interactive loop in which the
@@ -7,17 +6,12 @@
  *        from the program.
  * Return: Always 0.
  */
-int main(int argc, char *argv[])
+int main(void)
 {
     ssize_t read;
     char *input = NULL;
     size_t len = 0;
-    int i;
-
-    printf("Received %d arguments:\n", argc);
-    for (i = 0; i < argc; i++) {
-        printf("Argument %d: %s\n", i, argv[i]);
-    }
+    size_t i;
 
     while (1)
     {
@@ -33,14 +27,12 @@ int main(int argc, char *argv[])
 
         input[read - 1] = '\0';
 
-        for (i = 0; input[i] != '\0'; i++)
-        {
-            if (input[i] != ' ')
-                break;
-        }
+        printf("Received %lu arguments:\n", (unsigned long)read);
 
-        if (input[i] == '\0')
-            continue;
+        for (i = 0; i < (size_t)read; i++)
+        {
+            printf("Argument %lu: %c\n", (unsigned long)i, input[i]);
+        }
 
         if (strcmp(input, "exit") == 0)
         {
