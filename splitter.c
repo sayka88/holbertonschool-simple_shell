@@ -1,13 +1,14 @@
 #include "main.h"
+
 /**
- * line_div - splits given string into parts
- *
- * @command: The command string to parse.
- * @arr: An array of strings to store the parsed arguments.
- *
- * Return: modified char array.
- */
-char **line_div(char *command,char **arr)
+* line_div - splits given string into parts
+*
+* @command: The command string to parse.
+* @arr: An array of strings to store the parsed arguments.
+*
+* Return: modified char array.
+*/
+char **line_div(char *command, char **arr)
 {
 	char *token;
 	int i = 0;

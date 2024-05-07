@@ -12,6 +12,9 @@ extern char **environ;
 
 void executeCommand(char *command);
 void printEnvironment(void);
-bool findExecutable(char *command, char *fullPath);
+char *findExecutable(char *command, char *fullPath);
+char **tokenize(char *str);
+void removeNewline(char *str);
+void runCommand(char **args);
 
 #endif
