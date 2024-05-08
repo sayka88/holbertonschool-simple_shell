@@ -9,7 +9,7 @@
  * Return: bool.
  */
 
-bool findExecutable(char *command, char *fullPath)
+char *findExecutable(char *command, char *fullPath)
 {
     char *path = getenv("PATH");
     char *token = strtok(path, ":");
@@ -19,10 +19,10 @@ bool findExecutable(char *command, char *fullPath)
         snprintf(fullPath, 255, "%s/%s", token, command);
         if (access(fullPath, X_OK) == 0)
         {
-            return true;
+            return fullPath;
         }
         token = strtok(NULL, ":");
     }
-    return false;
+    return NULL;
 }
 

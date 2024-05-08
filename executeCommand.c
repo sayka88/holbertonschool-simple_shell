@@ -1,4 +1,8 @@
 #include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -9,12 +13,11 @@
 void executeCommand(char *command)
 {
     char *token;
-    pid_t child_pid;
-    int argIndex = 0;
     char *args[20];
-    int status;
+    int argIndex = 0;
     char fullPath[20];
 
+    pid_t pid;
     args[0] = NULL;
     for (token = strtok(command, " "); token != NULL;
             token = strtok(NULL, " "))
@@ -32,18 +35,17 @@ void executeCommand(char *command)
 
     if (strcmp(args[0], "exit") == 0)
     {
-        free(command);
+        printf("Exiting shell...\n");
         exit(EXIT_SUCCESS);
     }
 
-    child_pid = fork();
-    if (child_pid == -1)
+    pid = fork();
+    if (pid == -1)
     {
         perror("Error when creating a child process");
-        free(command);
         exit(EXIT_FAILURE);
     }
-    else if (child_pid == 0)
+    else if (pid == 0)
     {
         if (args[0] && !strchr(args[0], '/'))
         {
@@ -52,18 +54,22 @@ void executeCommand(char *command)
         }
         if (execve(args[0], args, environ) == -1)
         {
-            perror("./shell");
+            perror("execve");
             exit(EXIT_FAILURE);
         }
     }
     else
     {
-        waitpid(child_pid, &status, 0);
-        if (WIFEXITED(status)) {
-            if (WEXITSTATUS(status) != 0) {
-                printf("Command failed with status %d\n", WEXITSTATUS(status));
-            }
-        } else {
+        int status;
+        waitpid(pid, &status, 0);
+        if (WIFEXITED(status))
+        {
+            int exit_status = WEXITSTATUS(status);
+            if (exit_status != 0)
+                printf("Command failed with status %d\n", exit_status);
+        }
+        else
+        {
             printf("Command terminated abnormally\n");
         }
     }
