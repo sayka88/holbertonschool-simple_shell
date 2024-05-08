@@ -10,6 +10,13 @@
 int execute(char *command)
 {
         int status = 0;
+
+        if (command == NULL || command[0] == '\0')
+        {
+                fprintf(stderr, "Command is empty\n");
+                return -1;
+        }
+
         pid_t pid = fork();
 
         if (pid == -1)
@@ -93,3 +100,4 @@ int execute(char *command)
         }
         return (status);
 }
+
