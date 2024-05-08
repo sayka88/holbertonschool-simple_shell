@@ -1,28 +1,20 @@
 #ifndef MAIN_H
-#define MATH_H
+#define MAIN_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/wait.h>
-<<<<<<< HEAD
-#include <stdbool.h>
-
-extern char **environ;
-
-void executeCommand(char *command);
-void printEnvironment(void);
-bool findExecutable(char *command, char *fullPath);
-
-
-=======
-#include <fcntl.h>
+#include <sched.h>
 #include <sys/types.h>
-char *_getline(void);
-void line_div(char *command, char *arr[]);
-int execute(char *command);
+#include <sys/wait.h>
+
 extern char **environ;
-int main(void);
->>>>>>> refs/remotes/origin/main
-#endif
+
+void exec(char **args, char *input);
+void tokenize(char *input, char *args[]);
+void handlePath(const char* path, int length);
+void printEnv(void);
+char *handle_path(char *input);
+
+#endif /*MAIN_H*/
