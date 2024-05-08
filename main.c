@@ -1,6 +1,24 @@
 #include "main.h"
 
 /**
+ * removeNewline - Removes the newline character from the input string.
+ * @str: The input string.
+ */
+void removeNewline(char *str)
+{
+    int i;
+
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        if (str[i] == '\n')
+        {
+            str[i] = '\0';
+            break;
+        }
+    }
+}
+
+/**
  * main - Creates an interactive loop in which the
  *        user can enter commands and receive responses
  *        from the program.
@@ -38,11 +56,10 @@ int main(void)
         }
         else if (strcmp(input, "env") == 0)
             printEnvironment();
-        else {
-            int status = executeCommand(input);
-            exit(status);
-        }
+        else
+            executeCommand(input);
     }
     free(input);
     return (0);
 }
+
