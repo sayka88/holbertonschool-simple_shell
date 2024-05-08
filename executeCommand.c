@@ -6,6 +6,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+extern char **environ;
+
 /**
  * executeCommand - Executes a command on a Unix or Linux system.
  * @command: The input string.
@@ -19,8 +21,8 @@ void executeCommand(char *command)
 
     pid_t pid;
     args[0] = NULL;
-    for (token = strtok(command, " "); token != NULL;
-            token = strtok(NULL, " "))
+    for (token = strtok(command, " \n"); token != NULL;
+         token = strtok(NULL, " \n"))
     {
         args[argIndex] = token;
         argIndex++;
@@ -66,11 +68,15 @@ void executeCommand(char *command)
         {
             int exit_status = WEXITSTATUS(status);
             if (exit_status != 0)
+            {
                 printf("Command failed with status %d\n", exit_status);
+                exit(exit_status);
+            }
         }
-        else
+        else if (WIFSIGNALED(status))
         {
-            printf("Command terminated abnormally\n");
+            printf("Command terminated by signal %d\n", WTERMSIG(status));
+            exit(EXIT_FAILURE);
         }
     }
 }
