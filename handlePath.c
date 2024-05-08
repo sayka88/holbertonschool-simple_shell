@@ -1,5 +1,7 @@
-#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 char *handle_path(char *command) {
     char *path = getenv("PATH");
