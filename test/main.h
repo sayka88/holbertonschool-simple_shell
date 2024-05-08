@@ -8,9 +8,13 @@
 #include <sys/wait.h>
 #include <stdbool.h>
 
+extern char **environ;
 
-void removeNewline(char *str);
+void executeCommand(char *command);
 void printEnvironment(void);
-int executeCommand(char *command);
+char *findExecutable(char *command, char *fullPath);
+char **tokenize(char *str);
+void removeNewline(char *str);
+void runCommand(char **args);
 
 #endif

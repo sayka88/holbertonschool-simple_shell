@@ -1,42 +1,49 @@
 #include "main.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <stdio.h>
 
 /**
- * executeCommand - Executes a command in the shell.
- * @command: The command to execute.
- *
- * Return: 0 on success, 1 on failure.
- */
-int executeCommand(char *command) {
-    pid_t pid;
-    int status;
+* executeCommand - Executes a command on a Unix or Linux system.
+* @command: The input string.
+*/
+void executeCommand(char *command)
+{
+	char **args = tokenize(command);
+	pid_t child_pid;
+	int status;
 
-    pid = fork();
-    if (pid == -1) {
-        perror("fork");
-        return 1;
-    } else if (pid == 0) {
-        char *argv[4];
-        argv[0] = "/bin/sh";
-        argv[1] = "-c";
-        argv[2] = command;
-        argv[3] = NULL;
-        execve(argv[0], argv, NULL);
-        perror("execve");
-        _exit(127);
-    } else {
-        if (waitpid(pid, &status, 0) == -1) {
-            perror("waitpid");
-            return 1;
-        }
-        if (WIFEXITED(status)) {
-            return WEXITSTATUS(status);
-        } else {
-            return 1;
-        }
-    }
+	if (!args)
+	{
+		free(command);
+		return;
+	}
+
+	if (strcmp(args[0], "exit") == 0)
+	{
+		free(command);
+		free(args);
+		exit(EXIT_SUCCESS);
+	}
+
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("Error when creating a child process");
+		free(command);
+		free(args);
+		exit(EXIT_FAILURE);
+	}
+	else if (child_pid == 0)
+	{
+		if (execve(args[0], args, environ) == -1)
+		{
+			perror("./shell");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		wait(&status);
+	}
+
+	free(command);
+	free(args);
 }
-
