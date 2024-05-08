@@ -14,7 +14,7 @@ int main(void)
 		if (isatty(STDIN_FILENO))
 			printf("$ ");
 		command = _getline();
-		if (command == "")
+		if (command == NULL)
 			break;
 		if (strcmp(command, "exit") == 0)
 		{

@@ -7,7 +7,7 @@
  *
  * Return: modified char array.
  */
-char **line_div(char *command,char **arr)
+void line_div(char *command,char *arr[])
 {
 	char *token;
 	int i = 0;
