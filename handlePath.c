@@ -1,50 +1,24 @@
-#include "main.h"
+#include <stdlib.h>
+#include <string.h>
 
-/**
- * handle_path - Finds the path of the command to execute
- * @input: User input
- * Return: The full path of the command if found, NULL otherwise
- */
+char *handle_path(char *command) {
+    char *path = getenv("PATH");
+    char *token = strtok(path, ":");
 
-char *handle_path(char *input)
-{
-	int i = 0;
-	char *cache, *token, *result;
+    while (token != NULL) {
+        char *full_path = malloc(strlen(token) + strlen(command) + 2);
+        if (full_path == NULL) {
+            perror("malloc");
+            return NULL;
+        }
+        sprintf(full_path, "%s/%s", token, command);
+        if (access(full_path, X_OK) == 0) {
+            return full_path;
+        }
+        free(full_path);
+        token = strtok(NULL, ":");
+    }
 
-	if (strchr(input, '/') != NULL)
-		return (strdup(input));
-
-	while (environ[i] != NULL)
-	{
-		cache = strdup(environ[i]);
-		token = strtok(cache, "=");
-		if (strcmp(token, "PATH") == 0)
-		{
-			token = strtok(NULL, "=");
-			token = strtok(token, ":");
-			while (token != NULL)
-			{
-				result = malloc(strlen(token) + strlen(input) + 2);
-				if (result == NULL)
-				{
-					perror("Malloc is NULL");
-					return (NULL);
-				}
-				sprintf(result, "%s/%s", token, input);
-				if (access(result, X_OK) == 0)
-				{
-					free(cache);
-					return (result);
-				}
-
-				free(result);
-				token = strtok(NULL, ":");
-			}
-		}
-		free(cache);
-		i++;
-	}
-
-	free(input);
-	return (NULL);
+    return NULL;
 }
+
