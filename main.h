@@ -8,7 +8,6 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <sys/types.h>
-char **line_div(char *command,char **arr);
 char *_getline(void);
 void line_div(char *command, char *arr[]);
 int execute(char *command);
