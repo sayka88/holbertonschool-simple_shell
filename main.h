@@ -5,14 +5,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
 #include <sys/wait.h>
 #include <stdbool.h>
 
 extern char **environ;
 
-void executeCommand(char *command);
+int executeCommand(char *command);
 void printEnvironment(void);
 void removeNewline(char *str);
 char *findExecutable(char *command, char *fullPath);
 
-#endif
+#endif /* MAIN_H */
+

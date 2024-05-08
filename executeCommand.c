@@ -12,7 +12,7 @@ extern char **environ;
  * executeCommand - Executes a command on a Unix or Linux system.
  * @command: The input string.
  */
-void executeCommand(char *command)
+int executeCommand(char *command)
 {
     char *token;
     char *args[20];
@@ -32,7 +32,7 @@ void executeCommand(char *command)
     if (args[0] == NULL)
     {
         printf("Command is not specified\n");
-        return;
+        return 127;
     }
 
     if (strcmp(args[0], "exit") == 0)
@@ -45,7 +45,7 @@ void executeCommand(char *command)
     if (pid == -1)
     {
         perror("Error when creating a child process");
-        exit(EXIT_FAILURE);
+        return 1;
     }
     else if (pid == 0)
     {
@@ -57,7 +57,7 @@ void executeCommand(char *command)
         if (execve(args[0], args, environ) == -1)
         {
             perror("execve");
-            exit(EXIT_FAILURE);
+            exit(2);
         }
     }
     else
@@ -70,14 +70,15 @@ void executeCommand(char *command)
             if (exit_status != 0)
             {
                 printf("Command failed with status %d\n", exit_status);
-                exit(exit_status);
+                return exit_status;
             }
         }
         else if (WIFSIGNALED(status))
         {
             printf("Command terminated by signal %d\n", WTERMSIG(status));
-            exit(EXIT_FAILURE);
+            return EXIT_FAILURE;
         }
     }
+    return 0;
 }
 
