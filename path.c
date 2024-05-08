@@ -1,13 +1,12 @@
-#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <limits.h>
 
-/**
- * findExecutable - Find Executable path
- *
- * @command: line of command
- * @fullPath: path
- *
- * Return: bool.
- */
+extern char **environ;
 
 char *findExecutable(char *command, char *fullPath)
 {
@@ -16,13 +15,14 @@ char *findExecutable(char *command, char *fullPath)
 
     while (token != NULL)
     {
-        snprintf(fullPath, 255, "%s/%s", token, command);
-        if (access(fullPath, X_OK) == 0)
+        char tempPath[PATH_MAX];
+        snprintf(tempPath, PATH_MAX, "%s/%s", token, command);
+        if (access(tempPath, X_OK) == 0)
         {
+            strncpy(fullPath, tempPath, PATH_MAX);
             return fullPath;
         }
         token = strtok(NULL, ":");
     }
     return NULL;
 }
-
