@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <limits.h>
 
 extern char **environ;
 
@@ -15,11 +14,10 @@ extern char **environ;
  */
 int executeCommand(char *command)
 {
-char *executablePath;
     char *token;
     char *args[20];
     int argIndex = 0;
-    char fullPath[PATH_MAX];
+    char fullPath[20];
 
     pid_t pid;
     args[0] = NULL;
@@ -33,7 +31,7 @@ char *executablePath;
 
     if (args[0] == NULL)
     {
-        fprintf(stderr, "Command is not specified\n");
+        printf("Command is not specified\n");
         return 127;
     }
 
@@ -41,13 +39,6 @@ char *executablePath;
     {
         printf("Exiting shell...\n");
         exit(EXIT_SUCCESS);
-    }
-
-    char *executablePath = findExecutable(args[0], fullPath);
-    if (!executablePath)
-    {
-        fprintf(stderr, "%s: command not found\n", args[0]);
-        return 127;
     }
 
     pid = fork();
@@ -58,10 +49,15 @@ char *executablePath;
     }
     else if (pid == 0)
     {
-        if (execve(executablePath, args, environ) == -1)
+        if (args[0] && !strchr(args[0], '/'))
         {
-            fprintf(stderr, "%s: command not found\n", args[0]);
-            exit(127);
+            if (findExecutable(args[0], fullPath))
+                args[0] = fullPath;
+        }
+        if (execve(args[0], args, environ) == -1)
+        {
+            perror("execve");
+            exit(2);
         }
     }
     else
@@ -73,16 +69,15 @@ char *executablePath;
             int exit_status = WEXITSTATUS(status);
             if (exit_status != 0)
             {
-                fprintf(stderr, "Command failed with status %d\n", exit_status);
+                printf("Command failed with status %d\n", exit_status);
                 return exit_status;
             }
         }
         else if (WIFSIGNALED(status))
         {
-            fprintf(stderr, "Command terminated by signal %d\n", WTERMSIG(status));
+            printf("Command terminated by signal %d\n", WTERMSIG(status));
             return EXIT_FAILURE;
         }
     }
     return 0;
 }
-
