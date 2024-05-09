@@ -1,95 +1,83 @@
-.TH _SIMPLE SHELL "05 May 2024" "1.0" "simple shell page"
+.TH
+
+simple_shell man page
 
 .SH NAME
-hsh Simple Shell \-  command language interpreter
+
+simple_shell (hsh.c \- line command interpreter in UNIX)
+
 .SH SYNOPSIS
-.B Interactive mode
-.TP
-.B ./hsh
-.TP
-$ <command> <flag1> <flag2> …
-.TP
-$ ls
-.TP
-$ ls -lan
-.TP
-$ mkdir hello
-.TP
-.B Non-interactive mode
-.TP
-Command | ./hsh
-.TP
-echo “/bin/ls” | ./hsh
-.TP
-echo “ls -l” | ./hsh
+
+$ /hsh [options] [file]
+	
 .SH DESCRIPTION
-`hsh` is a simple custom shell implementation that allows users to execute commands and interact with the system. It provides a basic command-line interface for users to input commands and receive responses from the program.
-.SH COMMANDS
-.B exit:
-- Exits the shell.
-.TP
-.B env:
-- Displays the system environment variables.
-.TP
-.B Clear
-- Clean the terminal screen
-.SH Commands
-.B Absolute path
-.TP
-This shell executes commands given in the form of an absolute path:
-.TP
-.B Input
-.TP
-$ /bin/ls -l
-.TP
-.B Output
-.TP
-total 72
-.TP
--rwxr-xr-x 1 root root  1230 May  8 11:31 executeCommand.c
-.TP
--rwxr-xr-x 1 root root 17064 May  8 11:19 hsh
-.TP
--rwxr-xr-x 1 root root   171 May  8 09:35 AUTHORS
-.TP
--rwxr-xr-x 1 root root  1265 May  8 11:31 main.c
-.TP
--rwxr-xr-x 1 root root   303 May  8 11:31 main.h
-.TP
--rwxr-xr-x 1 root root  2324 May  8 09:48 man_1_simple_shell
-.TP
--rwxr-xr-x 1 root root   502 May  8 11:31 path.c
-.TP
--rwxr-xr-x 1 root root   208 May  8 11:31 printEnv.c
-.TP
--rwxr-xr-x 1 root root  2049 May  8 09:35 README.md
-.SH USAGE
-To compile and run the custom shell on your system, follow these steps:
-.TP
-1. Clone the repository:
-.TP
-git clone https://github.com/sayka88/holbertonschool-simple_shell.git
-.TP
-cd holbertonschool-simple_shell
-.TP
-2. Compile the source code using GCC:
-.TP
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
-.TP
-3. Run the shell:
-.TP
-./hsh
-.TP
-Once the shell is running, you can interact with it using the command-line interface. Here are some commands you can try:
-.TP
-- Entering commands: Type in various commands and press Enter to execute them.
-.TP
-- Exiting the shell: Use the "exit" command to exit the shell.
-.TP
-- Displaying environment variables: Use the "env" command to print the system environment variables.I
+
+simple_shell (hsh.c) is a UNIX command language interpreter that executes commands read from the standard input or from a file, made in C langage.
+
+.B 
+
+ ./hsh	It's a simple UNIX command line interpreter.
+
+.SH RETURN VALUE
+
+The program return the status of the last executed command ( 0 if no command was executed), the number means exit fail situation.
+	
+.SH PATH
+
+It search in the PATH env variable to find the executable program file location.
+
+.SH EXAMPLES OF INPUT COMMAND
+
+ls			list directory contents
+
+ls -l			list in long format file system type
+
+pwd	 		will display the present working directory
+
+rm			will remove a file
+
+mv			will move or rename one or more files or directories
+
+cp			Will copy SOURCE to DEST
+
+exit			cause normal process termination
+
+ctrl + d, ctrl + c	stop the prompt input.
+
+.SH COMMAND EXECUTION
+
+After a command has been split into words, if it results in a simple command and an optional list of arguments, the following actions are taken:
+
+* If the command name contains no slashes, the shell attempts to locate it.  If there exists a shell function by that name, that function is invoked.
+
+* If the name does not match a function, the shell searches for it in the list of shell builtins.  If a match is found, that builtin is invoked.
+
+* If the search is successful, or if the command name contains one or more slashes, the shell executes the named program in a child process.
+
+* If this execution succeeds or fails the status is return.
+
+.SH EXIT STATUS
+
+The exit status of an executed command is the value returned by the wait() system call.
+Exit statuses fall between 0 and 255, though, as explained below, the shell may use values above 125 specially.
+Exit statuses from shell builtins and compound commands are also limited to this range.
+
+Under certain circumstances, the shell will use special values to indicate specific failure modes.
+
+.SH SEE ALSO
+
+Bash Reference Manual, Brian Fox and Chet Ramey
+
+The Gnu Readline Library, Brian Fox and Chet Ramey
+The Gnu History Library, Brian Fox and Chet Ramey
+Portable Operating System Interface (POSIX) Part 2: Shell and Utilities, IEEE
+Man sh()
+
+.SH BUGS REPORT
+
+Please contact the authors.
+	
 .SH AUTHORS
-Yusupova Sayyara
-.PP
-Aysu Anar
-.SH COPYRIGHT
-[Copyright 2024], [Sayyara Yusupova - Aysu Anar]
+
+Sayyara Yusupova
+Aysu Mammadova
