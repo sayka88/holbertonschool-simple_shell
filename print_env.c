@@ -1,16 +1,14 @@
 #include "main.h"
-
 /**
- * printEnv - print the environment variables
- * Return: void
+ * print_env - print env variables
  */
-
-void printEnv(void)
+void print_env(void)
 {
-	char **env;
+	int i = 0;
 
-	for (env = environ; *env != NULL; env++)
+	while (environ[i])
 	{
-		printf("%s\n", *env);
+		printf("%s\n", environ[i]);
+		i++;
 	}
 }
