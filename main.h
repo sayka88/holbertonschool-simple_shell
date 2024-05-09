@@ -1,22 +1,31 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef SIMPLE_SHELL
+#define SIMPLE_SHELL
 
-#include <stdio.h>
+/* LIBRARIES */
+
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+
+
+/* GLOBAL VARIABLE */
 
 extern char **environ;
 
-void tokenize(char *input, char *args[]);
-void printEnv(void);
-char *handle_path(char *input);
-void exec(char **args, char *input);
-void _err(char *args[]);
-int spacesCheck(const char *str);
-void tokenize(char *input, char *args[]);
 
-#endif /* MAIN_H */
+/* PROTOTYPES */
 
+int find_cmd_path(char *cmd, char *work_buffer);
+int file_exist(char *file);
+int execute_command(char *argv[]);
+char **fill_args(char *input_buffer);
+void print_env(void);
+int shell_error(void);
+char *_getenv(const char *name);
+
+#endif
