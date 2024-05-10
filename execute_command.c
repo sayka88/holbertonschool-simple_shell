@@ -21,7 +21,7 @@ int execute_command(char **command_array)
 	pid = fork();
 	if (pid == 0)
 	{
-		execve(command[0], command, environment_variables);
+		execve(command_array[0], command_array, environment_variables);
 		perror("execve failed");
 		exit(EXIT_FAILURE);
 	}
@@ -31,4 +31,4 @@ int execute_command(char **command_array)
 		return (WEXITSTATUS(return_code));
 	}
 }
-gendif
+#endif
