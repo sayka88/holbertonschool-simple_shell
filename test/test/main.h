@@ -6,15 +6,21 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
-#include <stdbool.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
 
+extern char **path_var;
 extern char **environ;
 
-void executeCommand(char *command);
-void printEnvironment(void);
-char *findExecutable(char *command, char *fullPath);
-char **tokenize(char *str);
-void removeNewline(char *str);
-void runCommand(char **args);
+int main(int argc, char **argv, char **env)
+char **get_user_command(char **buf);
+char **get_path_directories(char **env);
+char *find_executable_path(char *command, int *found);
+void display_environment(void);
+void print_shell_prompt(int status);
+void release_path_memory(void);
+int execute_command(char **command);
 
 #endif
+

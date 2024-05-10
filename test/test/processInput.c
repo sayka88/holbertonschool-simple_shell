@@ -1,19 +1,11 @@
+#include <errno.h>
 #include "main.h"
 
-/**
-* processInput - Processes the input string.
-* @input: The input string.
-*/
-void processInput(char *input)
+void print_shell_prompt(int status)
 {
-	char **args = tokenize(input);
-
-	if (args == NULL || args[0] == NULL)
-	{
-		free(input);
-		free(args);
-		return;
-	}
-	runCommand(args);
-	free(args);
+    if (status)
+        printf("#cisfun$ ");
+    else
+        errno = 0;
 }
+

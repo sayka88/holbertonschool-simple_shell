@@ -1,30 +1,28 @@
-#ifndef TOKENIZE_H
-#define TOKENIZE_H
-
 #include "main.h"
 
 /**
-* custom_strtok - Custom implementation of strtok
-* @str: The string to tokenize.
-* @delim: The delimiter character.
+* _strtok - Custom implementation of strtok function.
 *
-* This function splits the input string into
-*tokens based on the specified delimiter
+* This function splits a string into tokens using a specified delimiter
+* character. It behaves similarly to the standard strtok function.
+*
+* @str: The string to tokenize.
+* @delim: The delimiter character used to split the string.
 *
 * Return: An array of tokens.
 */
 
-char **custom_strtok(char *str, char delim)
+char **_strtok(char *str, char delim)
 {
-char **token_array, *start, *end;
-int i = 0, token_count = 1, max_tokens = 10;
+char **array, *start, *end;
+int i = 0, j = 1, max_tokens = 10;
 
 if (str == NULL)
 	return (NULL);
 
-token_array = malloc(sizeof(char *) * max_tokens);
+array = malloc(sizeof(char *) * max_tokens);
 
-if (token_array == NULL)
+if (array == NULL)
 	return (NULL);
 
 while (str[i])
@@ -36,25 +34,21 @@ while (str[i])
 			i++;
 		if (str[i] == '\0')
 		{
-			token_array[token_count - 1] = strdup(start);
-			token_count++;
+			array[j - 1] = strdup(start);
+			j++;
 			break;
 		}
 		else
 		{
 			end = str + i;
 			*end = '\0';
-			token_array[token_count - 1] = strdup(start), *end = delim, start = end;
+			array[j - 1] = strdup(start), *end = delim, start = end;
 		}
-		token_count++;
+		j++;
 	}
 	i++;
 }
 
-token_array[token_count - 1] = NULL;
-return (token_array);
+array[j - 1] = NULL;
+return (array);
 }
-
-
-
-#endif
