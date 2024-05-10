@@ -13,10 +13,12 @@
 extern char **path_variables;
 extern char **environment_variables;
 
-char **_strtok(char *str, char delim);
-int exec_command(char **command);
-char *find_file_location(char *command, int *lookup);
+char **custom_strtok(char *str, char delim);
+int execute_command(char **command_array);
+char *find_file_location(char *file_name, int *lookup);
 int count_arguments(char *input_buffer, int size);
+char **fetch_command(char **input_buffer);
+
 char **parse_command(char **input_buffer);
 void search_path(char **env_vars, int *row_index, int *column_index);
 char **initialize_path(char **environment_variables);
