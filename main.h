@@ -10,15 +10,15 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-extern char **path_var;
+extern char **path_list;
 extern char **environ;
-char **get_command(char **);
-char **get_path(char **);
-char *find_file(char *command, int *);
-void print_env(void);
+char **fetch_command(char **);
+char **initialize_path(char **);
+char *search_file(char *file_name, int *);
+void print_environment(void);
 void print_prompt(int status);
-void free_path(void);
-int exec_c(char **fcommand);
-char **_strtok(char *str, char delim);
+void release_path_memory(void);
+int execute_command(char **command_array);
+char **custom_strtok(char *str, char delim);
 
 #endif
