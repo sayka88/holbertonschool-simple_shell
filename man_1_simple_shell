@@ -1,4 +1,4 @@
-.TH SIMPLE\_SHELL(1) User Commands SIMPLE\_SHELL(1)
+.TH hsh 1 "1 May 2024" "1.0" "hsh manual page"
 
 .SH NAME
 
@@ -14,7 +14,7 @@ simple\_shell (hsh.c) is a UNIX command language interpreter that executes comma
 
 .B
 
- ./hsh	It's a simple UNIX command line interpreter.
+ ./hsh  It's a simple UNIX command line interpreter.
 
 .SH RETURN VALUE
 
@@ -26,21 +26,21 @@ It searches in the PATH environment variable to find the executable program file
 
 .SH EXAMPLES OF INPUT COMMAND
 
-ls			list directory contents
+ls                      list directory contents
 
-ls -l			list in long format file system type
+ls -l                   list in long format file system type
 
-pwd	 		will display the present working directory
+pwd                     will display the present working directory
 
-rm			will remove a file
+rm                      will remove a file
 
-mv			will move or rename one or more files or directories
+mv                      will move or rename one or more files or directories
 
-cp			Will copy SOURCE to DEST
+cp                      Will copy SOURCE to DEST
 
-exit			cause normal process termination
+exit                    cause normal process termination
 
-ctrl + d, ctrl + c	stop the prompt input.
+ctrl + d, ctrl + c      stop the prompt input.
 
 .SH COMMAND EXECUTION
 
@@ -76,3 +76,4 @@ Please contact the authors.
 
 Sayyara Yusupova
 Aysu Mammadova
+
